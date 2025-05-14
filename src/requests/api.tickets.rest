@@ -1,0 +1,7 @@
+### Get all tickets (admin only)
+GET http://localhost:3000/api/tickets
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get ticket by code
+GET http://localhost:3000/api/tickets/ABC-123-XYZ
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...

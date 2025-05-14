@@ -1,0 +1,37 @@
+### Get all products
+GET http://localhost:3000/api/products
+
+### Get product by ID
+GET http://localhost:3000/api/products/645f1a2b3c4d5e6f7a8b9c0d
+
+### Create a new product (admin only)
+POST http://localhost:3000/api/products
+Content-Type: application/json
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "title": "New Product",
+  "description": "This is a new product",
+  "price": 29.99,
+  "code": "PROD-001",
+  "stock": 100,
+  "category": "Electronics",
+  "thumbnail": "https://example.com/image.jpg",
+  "status": true
+}
+
+### Update a product (admin only)
+PUT http://localhost:3000/api/products/645f1a2b3c4d5e6f7a8b9c0d
+Content-Type: application/json
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "title": "Updated Product",
+  "description": "This product has been updated",
+  "price": 39.99,
+  "stock": 150
+}
+
+### Delete a product (admin only)
+DELETE http://localhost:3000/api/products/645f1a2b3c4d5e6f7a8b9c0d
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...

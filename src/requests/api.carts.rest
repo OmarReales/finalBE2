@@ -1,0 +1,20 @@
+### Get cart by ID
+GET http://localhost:3000/api/carts/645f1a2b3c4d5e6f7a8b9c0d
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Create a new cart
+POST http://localhost:3000/api/carts
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Add product to cart (user only)
+POST http://localhost:3000/api/carts/645f1a2b3c4d5e6f7a8b9c0d/product/645f1a2b3c4d5e6f7a8b9c0d
+Content-Type: application/json
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "quantity": 2
+}
+
+### Purchase cart (user only)
+POST http://localhost:3000/api/carts/645f1a2b3c4d5e6f7a8b9c0d/purchase
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
