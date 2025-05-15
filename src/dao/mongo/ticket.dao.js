@@ -8,8 +8,11 @@ export default class TicketDAO {
   async getByCode(code) {
     return await TicketModel.findOne({ code });
   }
-
   async getAll() {
     return await TicketModel.find();
+  }
+
+  async getByPurchaser(email) {
+    return await TicketModel.find({ purchaser: email });
   }
 }

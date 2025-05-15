@@ -10,8 +10,11 @@ export default class TicketRepository {
   async getByCode(code) {
     return await this.dao.getByCode(code);
   }
-
   async getAll() {
     return await this.dao.getAll();
+  }
+
+  async getByPurchaser(email) {
+    return await this.dao.getByPurchaser(email);
   }
 }

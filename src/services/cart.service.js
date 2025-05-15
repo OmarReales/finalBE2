@@ -3,7 +3,7 @@ import CartDAO from "../dao/mongo/cart.dao.js";
 export default class CartService {
   constructor() {
     const cartDao = new CartDAO();
-    this.cartRepository = new CartRepository();
+    this.cartRepository = new CartRepository(cartDao);
   }
 
   async getCartById(cid) {
@@ -21,8 +21,15 @@ export default class CartService {
   async updateCart(cid, products) {
     return await this.cartRepository.updateCartProducts(cid, products);
   }
-
   async clearCart(cid) {
     return await this.cartRepository.clearCart(cid);
+  }
+
+  async updateProductQuantity(cid, pid, quantity) {
+    return await this.cartRepository.updateProductQuantity(cid, pid, quantity);
+  }
+
+  async removeProduct(cid, pid) {
+    return await this.cartRepository.removeProduct(cid, pid);
   }
 }

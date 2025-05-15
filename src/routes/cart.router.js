@@ -4,6 +4,9 @@ import {
   createCart,
   addProductToCart,
   purchaseCart,
+  updateProductQuantity,
+  removeProductFromCart,
+  clearCart,
 } from "../controllers/cart.controller.js";
 import { passportCall, authorization } from "../utils/passportCall.js";
 
@@ -23,5 +26,18 @@ router.post(
   authorization("user"),
   purchaseCart
 );
+router.put(
+  "/:cid/product/:pid",
+  passportCall("jwt"),
+  authorization("user"),
+  updateProductQuantity
+);
+router.delete(
+  "/:cid/product/:pid",
+  passportCall("jwt"),
+  authorization("user"),
+  removeProductFromCart
+);
+router.delete("/:cid", passportCall("jwt"), authorization("user"), clearCart);
 
 export default router;

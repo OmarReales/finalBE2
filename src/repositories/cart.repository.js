@@ -17,4 +17,12 @@ export default class CartRepository {
   async clearCart(cid) {
     return await this.dao.clearCart(cid);
   }
+
+  async updateProductQuantity(cid, pid, quantity) {
+    return await this.dao.updateProductQuantity(cid, pid, quantity);
+  }
+
+  async removeProduct(cid, pid) {
+    return await this.dao.removeProduct(cid, pid);
+  }
 }

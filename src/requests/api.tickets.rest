@@ -5,3 +5,11 @@ Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ### Get ticket by code
 GET http://localhost:3000/api/tickets/ABC-123-XYZ
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get user tickets (all tickets where purchaser equals the current user's email)
+GET http://localhost:3000/api/tickets/user
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Attempt to access all tickets as regular user (should fail)
+GET http://localhost:3000/api/tickets
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... // Use a regular user token here

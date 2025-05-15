@@ -94,3 +94,52 @@ export const getCurrentUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const updateData = req.body;
+
+    // Validar que el user ID existe
+    if (!uid) {
+      return res.status(400).json({
+        status: "error",
+        message: "User ID is required",
+      });
+    }
+
+    // Verificar que el usuario existe
+    const existingUser = await userService.getUserById(uid);
+    if (!existingUser) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    // No permitir actualizar contraseña por esta vía
+    if (updateData.password) {
+      delete updateData.password;
+    }
+
+    // No permitir cambiar el rol por esta vía
+    if (updateData.role) {
+      delete updateData.role;
+    }
+
+    // No permitir actualizar el email para evitar conflictos
+    if (updateData.email) {
+      delete updateData.email;
+    }
+
+    const updatedUser = await userService.updateUser(uid, updateData);
+
+    res.json({
+      status: "success",
+      message: "User updated successfully",
+      payload: new UserDTO(updatedUser),
+    });
+  } catch (error) {
+    next(error);
+  }
+};

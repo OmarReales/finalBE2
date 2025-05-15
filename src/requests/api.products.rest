@@ -35,3 +35,21 @@ Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ### Delete a product (admin only)
 DELETE http://localhost:3000/api/products/645f1a2b3c4d5e6f7a8b9c0d
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get products with pagination and sorting (assuming these features exist)
+GET http://localhost:3000/api/products?limit=5&page=1&sort=price&order=desc
+
+### Attempt to create a product as regular user (should fail)
+POST http://localhost:3000/api/products
+Content-Type: application/json
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... // Use a regular user token here
+
+{
+  "title": "Unauthorized Product",
+  "description": "This should fail",
+  "price": 19.99,
+  "code": "UNAUTH-001",
+  "stock": 50,
+  "category": "Test",
+  "status": true
+}

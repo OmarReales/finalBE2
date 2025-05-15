@@ -21,3 +21,18 @@ Content-Type: application/json
 ### Get current user profile
 GET http://localhost:3000/api/users/current
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Update user
+PUT http://localhost:3000/api/users/645f1a2b3c4d5e6f7a8b9c0d
+Content-Type: application/json
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+{
+  "first_name": "Updated",
+  "last_name": "User",
+  "age": 31
+}
+
+### Attempt to access admin endpoint as regular user (should fail)
+GET http://localhost:3000/api/users
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... // Use a regular user token here

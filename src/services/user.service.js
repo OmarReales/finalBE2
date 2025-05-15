@@ -4,7 +4,7 @@ import UserDAO from "../dao/mongo/user.dao.js";
 export default class UserService {
   constructor() {
     const userDao = new UserDAO();
-    this.userRepository = new UserRepository();
+    this.userRepository = new UserRepository(userDao);
   }
 
   async getUsers() {

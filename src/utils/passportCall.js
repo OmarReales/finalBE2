@@ -15,12 +15,20 @@ export const passportCall = (strategy) => {
   };
 };
 
-export const authorization = (role) => {
+export const authorization = (roles) => {
   return async (req, res, next) => {
     if (!req.user)
       return res.status(401).send({ status: "error", error: "Unauthorized" });
-    if (req.user.role !== role)
-      return res.status(403).send({ status: "error", error: "Forbidden" });
+
+    // Convertir un único rol a un array para mantener consistencia
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+
+    if (!allowedRoles.includes(req.user.role))
+      return res.status(403).send({
+        status: "error",
+        error: "Forbidden - Insufficient permissions",
+      });
+
     next();
   };
 };

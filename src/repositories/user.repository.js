@@ -1,9 +1,8 @@
 import UserDTO from "../dto/user.dto.js";
-import UserDAO from "../dao/mongo/user.dao.js";
 
 export default class UserRepository {
-  constructor() {
-    this.dao = new UserDAO();
+  constructor(dao) {
+    this.dao = dao;
   }
 
   getUsers = async () => {

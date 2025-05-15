@@ -4,7 +4,7 @@ import ProductDAO from "../dao/mongo/product.dao.js";
 export default class ProductService {
   constructor() {
     const productDao = new ProductDAO();
-    this.productRepository = new ProductRepository();
+    this.productRepository = new ProductRepository(productDao);
   }
 
   async getProducts() {
@@ -25,5 +25,13 @@ export default class ProductService {
 
   async deleteProduct(pid) {
     return await this.productRepository.delete(pid);
+  }
+
+  async updateStock(pid, quantity) {
+    return await this.productRepository.updateStock(pid, quantity);
+  }
+
+  async checkStock(pid, quantity) {
+    return await this.productRepository.checkStock(pid, quantity);
   }
 }

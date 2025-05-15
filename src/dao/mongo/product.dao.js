@@ -5,8 +5,8 @@ export default class ProductDAO {
     return await ProductModel.find();
   }
 
-  async getById(id) {
-    return await ProductModel.findById(id); // Fixed: pid -> id
+  async getById(pid) {
+    return await ProductModel.findById(pid);
   }
 
   async create(product) {

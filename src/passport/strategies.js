@@ -2,7 +2,7 @@ import passport from "passport";
 import jwt from "passport-jwt";
 import local from "passport-local";
 import userModel from "../dao/models/user.model.js";
-import { isValidPassword, hashPassword } from "../utils/bcrypt.js";
+import { isValidPassword } from "../utils/bcrypt.js";
 import config from "../config/config.js";
 import { cookieExtractor } from "../utils/cookieExtractor.js";
 
@@ -33,7 +33,11 @@ export const initJwtStrategy = () => {
       },
       async (jwt_payload, done) => {
         try {
-          return done(null, jwt_payload);
+          const user = await userModel.findById(jwt_payload.id);
+          if (!user) {
+            return done(null, false, { message: "User not found" });
+          }
+          return done(null, user);
         } catch (error) {
           return done(error, false);
         }

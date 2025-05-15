@@ -28,12 +28,36 @@ export default class CartDAO {
       { new: true }
     );
   }
-
   async clearCart(cid) {
     return await CartModel.findByIdAndUpdate(
       cid,
       { products: [] },
       { new: true }
     );
+  }
+
+  async updateProductQuantity(cid, pid, quantity) {
+    const cart = await CartModel.findById(cid);
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    const index = cart.products.findIndex((p) => p.product.toString() === pid);
+    if (index === -1) {
+      throw new Error("Product not found in cart");
+    }
+
+    cart.products[index].quantity = quantity;
+    return await cart.save();
+  }
+
+  async removeProduct(cid, pid) {
+    const cart = await CartModel.findById(cid);
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    cart.products = cart.products.filter((p) => p.product.toString() !== pid);
+    return await cart.save();
   }
 }

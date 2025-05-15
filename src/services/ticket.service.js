@@ -5,7 +5,7 @@ import TicketDAO from "../dao/mongo/ticket.dao.js";
 export default class TicketService {
   constructor() {
     const ticketDao = new TicketDAO();
-    this.ticketRepository = new TicketRepository();
+    this.ticketRepository = new TicketRepository(ticketDao);
   }
 
   async createTicket(ticketData) {
@@ -21,8 +21,11 @@ export default class TicketService {
   async getTicketByCode(code) {
     return await this.ticketRepository.getByCode(code);
   }
-
   async getAllTickets() {
     return await this.ticketRepository.getAll();
+  }
+
+  async getTicketsByPurchaser(email) {
+    return await this.ticketRepository.getByPurchaser(email);
   }
 }

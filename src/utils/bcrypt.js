@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-export const hashPassword = async (password) => {
+export const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 

@@ -19,10 +19,28 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### Get current user
+### Get current session
 GET http://localhost:3000/api/sessions/current
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### Logout
 POST http://localhost:3000/api/sessions/logout
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Register failure test (missing required fields)
+POST http://localhost:3000/api/sessions/register
+Content-Type: application/json
+
+{
+  "email": "incomplete@example.com",
+  "password": "short"
+}
+
+### Login failure test (wrong password)
+POST http://localhost:3000/api/sessions/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrongpassword"
+}

@@ -44,3 +44,24 @@ export const getTicketByCode = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUserTickets = async (req, res, next) => {
+  try {
+    // Verificamos que el usuario esté autenticado
+    if (!req.user || !req.user.email) {
+      return res.status(401).json({
+        status: "error",
+        message: "Unauthorized - User must be logged in",
+      });
+    }
+
+    const tickets = await ticketService.getTicketsByPurchaser(req.user.email);
+
+    res.json({
+      status: "success",
+      payload: tickets.map((t) => new TicketDTO(t)),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
