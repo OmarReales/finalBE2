@@ -1,10 +1,27 @@
 import userModel from "../models/user.model.js";
 
 export default class UserDAO {
-  async getUsers() {
+  async getUsers(options = {}) {
     try {
-      let users = await userModel.find();
-      return users;
+      const { limit = 10, page = 1, sort = null, query = {} } = options;
+
+      // Configuración para ordenamiento
+      const sortOptions = {};
+      if (sort) {
+        sortOptions.last_name = sort === "asc" ? 1 : -1;
+      }
+
+      // Ejecutar paginación
+      let result = await userModel.paginate(query, {
+        limit,
+        page,
+        sort: sortOptions,
+        lean: true,
+        // Excluir campo de contraseña en la consulta
+        select: "-password",
+      });
+
+      return result;
     } catch (error) {
       console.error("Error fetching users:", error);
       return null;

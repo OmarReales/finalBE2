@@ -11,9 +11,11 @@ import productRouter from "./routes/products.router.js";
 import ticketRouter from "./routes/tickets.router.js";
 import { initializePassport } from "./passport/index.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import logger, { httpLoggerMiddleware } from "./utils/logger.js";
 
 const app = express();
 
+app.use(httpLoggerMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

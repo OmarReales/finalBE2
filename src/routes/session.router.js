@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import { getCurrentUser } from "../controllers/user.controller.js";
 import { passportCall } from "../utils/passportCall.js";
+import logger from "../utils/logger.js";
 import {
   validateLogin,
   validateRegister,
@@ -14,7 +15,9 @@ const router = Router();
 router.post(
   "/register",
   validateRegister,
-  passport.authenticate("register", { failureRedirect: "/registerfail" }),
+  passport.authenticate("register", {
+    failureRedirect: "/api/sessions/registerfail",
+  }),
   async (req, res) => {
     res.send({ status: "success", message: "User registered successfully" });
   }
@@ -22,7 +25,9 @@ router.post(
 router.post(
   "/login",
   validateLogin,
-  passport.authenticate("login", { failureRedirect: "/loginfail" }),
+  passport.authenticate("login", {
+    failureRedirect: "/api/sessions/loginfail",
+  }),
   async (req, res) => {
     const user = req.user;
     const token = jwt.sign(
@@ -53,7 +58,23 @@ router.post("/logout", (req, res) => {
   });
 });
 
-// Add current user endpoint
 router.get("/current", passportCall("jwt"), getCurrentUser);
+
+// Rutas para manejar errores de autenticación
+router.get("/registerfail", (req, res) => {
+  logger.warn("Registration failed attempt");
+  res.status(400).json({
+    status: "error",
+    message: "Registration failed. Please check your input and try again.",
+  });
+});
+
+router.get("/loginfail", (req, res) => {
+  logger.warn("Login failed attempt");
+  res.status(401).json({
+    status: "error",
+    message: "Login failed. Invalid credentials.",
+  });
+});
 
 export default router;

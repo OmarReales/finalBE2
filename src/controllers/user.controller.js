@@ -1,17 +1,65 @@
 import UserService from "../services/user.service.js";
 import UserDTO from "../dto/user.dto.js";
+import logger from "../utils/logger.js";
 
 const userService = new UserService();
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await userService.getUsers();
+    // Extraer parámetros de paginación y ordenamiento
+    const { limit = 10, page = 1, sort, role } = req.query;
 
-    res.json({
+    // Construir objeto de opciones
+    const options = {
+      limit: parseInt(limit),
+      page: parseInt(page),
+      sort: sort ? sort.toLowerCase() : null,
+      query: {},
+    };
+
+    // Aplicar filtro por rol si se proporciona
+    if (role) {
+      options.query.role = role;
+    }
+
+    logger.info(
+      `Fetching users with pagination: page ${page}, limit ${limit}${
+        sort ? `, sorted ${sort}` : ""
+      }${role ? `, filtered by role ${role}` : ""}`
+    );
+
+    // Obtener usuarios paginados
+    const result = await userService.getUsers(options);
+
+    // Construir respuesta con formato para paginación
+    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+
+    const response = {
       status: "success",
-      payload: users.map((u) => new UserDTO(u)),
-    });
+      payload: result.docs.map((u) => new UserDTO(u)),
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage
+        ? `${baseUrl}?limit=${limit}&page=${result.prevPage}${
+            sort ? `&sort=${sort}` : ""
+          }${role ? `&role=${role}` : ""}`
+        : null,
+      nextLink: result.hasNextPage
+        ? `${baseUrl}?limit=${limit}&page=${result.nextPage}${
+            sort ? `&sort=${sort}` : ""
+          }${role ? `&role=${role}` : ""}`
+        : null,
+    };
+
+    res.json(response);
   } catch (error) {
+    logger.error(`Error fetching users: ${error.message}`, {
+      stack: error.stack,
+    });
     next(error);
   }
 };

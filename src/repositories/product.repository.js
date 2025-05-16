@@ -2,8 +2,8 @@ export default class ProductRepository {
   constructor(dao) {
     this.dao = dao;
   }
-  async getAll() {
-    return await this.dao.getAll();
+  async getAll(options = {}) {
+    return await this.dao.getAll(options);
   }
 
   async getById(pid) {

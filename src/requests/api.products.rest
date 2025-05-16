@@ -1,6 +1,24 @@
 ### Get all products
 GET http://localhost:3000/api/products
 
+### Get all products with pagination
+GET http://localhost:3000/api/products?limit=5&page=1
+
+### Get products with sorting (ascending price)
+GET http://localhost:3000/api/products?sort=asc
+
+### Get products with sorting (descending price)
+GET http://localhost:3000/api/products?sort=desc
+
+### Get products filtered by category
+GET http://localhost:3000/api/products?category=Electronics
+
+### Get products with multiple filters
+GET http://localhost:3000/api/products?limit=10&page=1&sort=desc&category=Electronics
+
+### Get products by price range
+GET http://localhost:3000/api/products?minPrice=20&maxPrice=50
+
 ### Get product by ID
 GET http://localhost:3000/api/products/645f1a2b3c4d5e6f7a8b9c0d
 

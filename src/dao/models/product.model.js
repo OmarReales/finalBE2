@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const collection = "products";
 const schema = new mongoose.Schema({
@@ -12,5 +13,7 @@ const schema = new mongoose.Schema({
   status: { type: Boolean, default: true },
   owner: { type: String, default: "admin" },
 });
+
+schema.plugin(mongoosePaginate);
 
 export default mongoose.model(collection, schema);

@@ -1,8 +1,17 @@
 import ProductModel from "../models/product.model.js";
 
 export default class ProductDAO {
-  async getAll() {
-    return await ProductModel.find();
+  async getAll(options = {}) {
+    const { limit = 10, page = 1, sort = null, query = {} } = options;
+
+    const sortOptions = sort ? { price: sort === "asc" ? 1 : -1 } : {};
+
+    return await ProductModel.paginate(query, {
+      limit,
+      page,
+      sort: sortOptions,
+      lean: true,
+    });
   }
 
   async getById(pid) {

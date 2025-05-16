@@ -6,9 +6,8 @@ export default class ProductService {
     const productDao = new ProductDAO();
     this.productRepository = new ProductRepository(productDao);
   }
-
-  async getProducts() {
-    return await this.productRepository.getAll();
+  async getProducts(options = {}) {
+    return await this.productRepository.getAll(options);
   }
 
   async getProductById(pid) {

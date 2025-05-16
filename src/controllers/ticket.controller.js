@@ -1,5 +1,6 @@
 import TicketService from "../services/ticket.service.js";
 import TicketDTO from "../dto/ticket.dto.js";
+import logger from "../utils/logger.js";
 
 const ticketService = new TicketService();
 
@@ -7,11 +8,16 @@ export const getAllTickets = async (req, res, next) => {
   try {
     const tickets = await ticketService.getAllTickets();
 
+    logger.info(`Retrieved ${tickets.length} tickets`);
+
     res.json({
       status: "success",
       payload: tickets.map((t) => new TicketDTO(t)),
     });
   } catch (error) {
+    logger.error(`Error getting all tickets: ${error.message}`, {
+      stack: error.stack,
+    });
     next(error);
   }
 };

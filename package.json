@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "cross-env NODE_ENV=development node src/server.js",
+    "prod": "cross-env NODE_ENV=production node src/server.js",
+    "dev:win": "set NODE_ENV=development&& node src/server.js",
+    "prod:win": "set NODE_ENV=production&& node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +24,16 @@
     "finalbe2": "file:",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
+    "mongoose-paginate-v2": "^1.9.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }

@@ -2,6 +2,7 @@ import ProductService from "../services/product.service.js";
 import CartService from "../services/cart.service.js";
 import TicketService from "../services/ticket.service.js";
 import CartDTO from "../dto/cart.dto.js";
+import logger from "../utils/logger.js";
 
 const productService = new ProductService();
 const cartService = new CartService();
@@ -101,9 +102,12 @@ export const addProductToCart = async (req, res, next) => {
 export const purchaseCart = async (req, res, next) => {
   try {
     const { cid } = req.params;
+    const userId = req.user?.id || "unknown";
+    const userEmail = req.user?.email || "unknown";
 
     // Validación de usuario
     if (!req.user || !req.user.email) {
+      logger.warn(`Unauthorized purchase attempt for cart ${cid}`);
       return res.status(401).json({
         status: "error",
         message: "User authentication required for purchase",
@@ -111,15 +115,18 @@ export const purchaseCart = async (req, res, next) => {
     }
 
     if (!cid) {
+      logger.warn(`Missing cart ID in purchase request by user ${userId}`);
       return res.status(400).json({
         status: "error",
         message: "Cart ID is required",
       });
     }
 
-    // Get cart with populated products
+    logger.info(`Starting purchase process for cart ${cid} by user ${userId}`);
+    // Verificar que el carrito existe
     const cart = await cartService.getCartById(cid);
     if (!cart) {
+      logger.warn(`Cart ${cid} not found during purchase by user ${userId}`);
       return res.status(404).json({
         status: "error",
         message: "Cart not found",
@@ -127,16 +134,18 @@ export const purchaseCart = async (req, res, next) => {
     }
 
     if (!cart.products || cart.products.length === 0) {
+      logger.warn(`Attempted purchase of empty cart ${cid} by user ${userId}`);
       return res.status(400).json({
         status: "error",
         message: "Cannot purchase an empty cart",
       });
     }
-
-    // Process each product in cart
+    // Verificar que el carrito no esté vacío
     const successfulProducts = [];
     const failedProducts = [];
     let totalAmount = 0;
+
+    logger.info(`Processing ${cart.products.length} products in cart ${cid}`);
 
     // Procesar cada producto
     for (const item of cart.products) {
@@ -161,6 +170,10 @@ export const purchaseCart = async (req, res, next) => {
 
           // Actualizar monto total
           totalAmount += product.price * quantity;
+
+          logger.debug(
+            `Product ${product._id} processed successfully (${quantity} units, $${product.price} each)`
+          );
         } else {
           // Añadir a productos fallidos
           failedProducts.push({
@@ -168,6 +181,10 @@ export const purchaseCart = async (req, res, next) => {
             quantity,
             reason: "Insufficient stock",
           });
+
+          logger.debug(
+            `Insufficient stock for product ${product._id} (requested: ${quantity})`
+          );
         }
       } catch (error) {
         // Manejar errores específicos de cada producto
@@ -176,6 +193,10 @@ export const purchaseCart = async (req, res, next) => {
           quantity,
           reason: `Error processing: ${error.message}`,
         });
+
+        logger.error(
+          `Error processing product ${product._id}: ${error.message}`
+        );
       }
     }
 
@@ -184,9 +205,17 @@ export const purchaseCart = async (req, res, next) => {
     if (successfulProducts.length > 0) {
       ticket = await ticketService.createTicket({
         amount: totalAmount,
-        purchaser: req.user.email,
+        purchaser: userEmail,
       });
-    } // Convertir los productos fallidos al formato esperado por el modelo de carrito
+
+      logger.info(
+        `Ticket created successfully: ${ticket.code} for $${totalAmount} by user ${userEmail}`
+      );
+    } else {
+      logger.warn(`No products were successfully purchased by user ${userId}`);
+    }
+
+    // Convertir los productos fallidos al formato esperado por el modelo de carrito
     const failedCartProducts = failedProducts.map((item) => ({
       product: item.product,
       quantity: item.quantity,
@@ -194,6 +223,10 @@ export const purchaseCart = async (req, res, next) => {
 
     // Actualizar carrito para que solo contenga productos fallidos
     const updatedCart = await cartService.updateCart(cid, failedCartProducts);
+
+    logger.info(
+      `Purchase process completed for cart ${cid}. Success: ${successfulProducts.length}, Failed: ${failedProducts.length}`
+    );
 
     // Respuesta con información detallada
     return res.status(200).json({
@@ -215,7 +248,9 @@ export const purchaseCart = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.error("Error in purchase process:", error);
+    logger.error(`Error in purchase process: ${error.message}`, {
+      stack: error.stack,
+    });
     next(error);
   }
 };

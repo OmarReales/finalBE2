@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 import { hashPassword } from "../../utils/bcrypt.js";
 
 const collection = "users";
@@ -48,6 +49,8 @@ schema.pre("save", async function (next) {
     next(error);
   }
 });
+
+schema.plugin(mongoosePaginate);
 
 const userModel = mongoose.model(collection, schema);
 export default userModel;

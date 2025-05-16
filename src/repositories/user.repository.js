@@ -4,9 +4,8 @@ export default class UserRepository {
   constructor(dao) {
     this.dao = dao;
   }
-
-  getUsers = async () => {
-    let result = await this.dao.getUsers();
+  getUsers = async (options = {}) => {
+    let result = await this.dao.getUsers(options);
     return result;
   };
   getUserById = async (id) => {

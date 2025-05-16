@@ -2,6 +2,22 @@
 GET http://localhost:3000/api/users
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
+### Get users with pagination (admin only)
+GET http://localhost:3000/api/users?limit=5&page=1
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get users with sorting (admin only)
+GET http://localhost:3000/api/users?sort=asc
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get users filtered by role (admin only)
+GET http://localhost:3000/api/users?role=user
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### Get users with multiple filters (admin only)
+GET http://localhost:3000/api/users?limit=10&page=1&sort=desc&role=admin
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
 ### Get user by ID
 GET http://localhost:3000/api/users/645f1a2b3c4d5e6f7a8b9c0d
 Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...

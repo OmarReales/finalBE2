@@ -6,9 +6,8 @@ export default class UserService {
     const userDao = new UserDAO();
     this.userRepository = new UserRepository(userDao);
   }
-
-  async getUsers() {
-    return await this.userRepository.getUsers();
+  async getUsers(options = {}) {
+    return await this.userRepository.getUsers(options);
   }
 
   async getUserById(uid) {
