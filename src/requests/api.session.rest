@@ -21,7 +21,7 @@ Content-Type: application/json
 
 ### Get current session
 GET http://localhost:3000/api/sessions/current
-Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Cookie: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjRmMWM2OTEyOWEzZDIyODhlZWRkOCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzQ3Njg0MTQyLCJleHAiOjE3NDc2ODc3NDJ9.9VVdl7oy2FMaib7VhhPfn1alrwTro6xISms3KKFPgCA
 
 ### Logout
 POST http://localhost:3000/api/sessions/logout
