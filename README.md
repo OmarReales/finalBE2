@@ -115,8 +115,8 @@ The application uses environment-specific configurations:
 ```javascript
 // src/config/config.js
 export default {
-  PORT: process.env.PORT || 3001,
-  URL_MONGODB: process.env.URL_MONGODB || "mongodb://localhost:27017/finalbe2",
+  PORT: process.env.PORT || 3000,
+  URL_MONGODB: process.env.URL_MONGODB || "mongodb://localhost:27017/yourdb",
   COOKIE_SECRET: process.env.COOKIE_SECRET,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "1h",
@@ -233,7 +233,7 @@ Logs are stored in:
 ### Creating a new product
 
 ```bash
-curl -X POST http://localhost:3001/api/products \
+curl -X POST http://localhost:3000/api/products \
   -H "Content-Type: application/json" \
   -H "Cookie: cookieName=your_jwt_token" \
   -d '{
@@ -250,13 +250,13 @@ curl -X POST http://localhost:3001/api/products \
 ### Get products with pagination and filters
 
 ```bash
-curl -X GET "http://localhost:3001/api/products?limit=10&page=1&sort=desc&category=electronics&minPrice=20&maxPrice=100"
+curl -X GET "http://localhost:3000/api/products?limit=10&page=1&sort=desc&category=electronics&minPrice=20&maxPrice=100"
 ```
 
 ### Adding product to cart
 
 ```bash
-curl -X POST http://localhost:3001/api/carts/64a1b2c3d4e5f6g7h8i9j0k/product/09j8h7g6f5e4d3c2b1a \
+curl -X POST http://localhost:3000/api/carts/64a1b2c3d4e5f6g7h8i9j0k/product/09j8h7g6f5e4d3c2b1a \
   -H "Content-Type: application/json" \
   -H "Cookie: cookieName=your_jwt_token" \
   -d '{
@@ -267,7 +267,7 @@ curl -X POST http://localhost:3001/api/carts/64a1b2c3d4e5f6g7h8i9j0k/product/09j
 ### User registration
 
 ```bash
-curl -X POST http://localhost:3001/api/sessions/register \
+curl -X POST http://localhost:3000/api/sessions/register \
   -H "Content-Type: application/json" \
   -d '{
     "firstName": "John",
