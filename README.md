@@ -96,7 +96,7 @@ src/
 
    ```
    PORT=3001
-   URL_MONGODB=mongodb://localhost:27017/finalbe2
+   URL_MONGODB=mongodb://localhost:27017/yourdb
    COOKIE_SECRET=your_cookie_secret
    JWT_SECRET=your_jwt_secret
    JWT_EXPIRES_IN=1h
